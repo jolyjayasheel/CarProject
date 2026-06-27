@@ -6,7 +6,7 @@ function Navbar() {
 
   const navigate = useNavigate();
 
-  const loggedIn = localStorage.getItem("loggedIn");
+  const loggedIn = localStorage.getItem("loggedIn") === "true";
 
   const currentUser = JSON.parse(
     localStorage.getItem("currentUser")
@@ -17,15 +17,13 @@ function Navbar() {
     localStorage.removeItem("loggedIn");
     localStorage.removeItem("currentUser");
 
-    toast.success("👋 Logged Out Successfully");
+    toast.success("Logged Out Successfully");
 
     setTimeout(() => {
 
       navigate("/login");
 
-      window.location.reload();
-
-    }, 1000);
+    }, 800);
 
   };
 
@@ -38,7 +36,7 @@ function Navbar() {
         className="logo"
       >
 
-        🏎 Midnight Motors
+        🚗 Midnight Motors
 
       </Link>
 
@@ -66,9 +64,7 @@ function Navbar() {
               className="logout-btn"
               onClick={logout}
             >
-
               Logout
-
             </button>
 
           </>
@@ -78,15 +74,11 @@ function Navbar() {
           <>
 
             <Link to="/login">
-
               Login
-
             </Link>
 
             <Link to="/register">
-
               Register
-
             </Link>
 
           </>
