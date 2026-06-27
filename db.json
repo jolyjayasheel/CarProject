@@ -57,5 +57,6 @@
       "description": "Legendary Japanese sports car with modern engineering."
     }
   ],
+   "users": [],
   "$schema": "./node_modules/json-server/schema.json"
 }

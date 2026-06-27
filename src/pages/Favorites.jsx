@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import api from "../services/api";
 import "../styles/cars.css";
 
 function Favorites() {
@@ -8,32 +9,89 @@ function Favorites() {
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
+
     loadFavorites();
+
   }, []);
 
-  const loadFavorites = () => {
+  const loadFavorites = async () => {
 
-    const favs =
-      JSON.parse(localStorage.getItem("favorites")) || [];
+    try {
 
-    setFavorites(favs);
+      const currentUser = JSON.parse(
+        localStorage.getItem("currentUser")
+      );
+
+      if (!currentUser) {
+
+        setFavorites([]);
+
+        return;
+
+      }
+
+      const response = await api.get(
+        `/users/${currentUser.id}`
+      );
+
+      setFavorites(response.data.favorites || []);
+
+      localStorage.setItem(
+        "currentUser",
+        JSON.stringify(response.data)
+      );
+
+    } catch {
+
+      toast.error("Failed to load favorites");
+
+    }
 
   };
 
-  const removeFavorite = (id) => {
+  const removeFavorite = async (carId) => {
 
-    const updatedFavorites = favorites.filter(
-      (car) => car.id !== id
-    );
+    try {
 
-    localStorage.setItem(
-      "favorites",
-      JSON.stringify(updatedFavorites)
-    );
+      const currentUser = JSON.parse(
+        localStorage.getItem("currentUser")
+      );
 
-    setFavorites(updatedFavorites);
+      const response = await api.get(
+        `/users/${currentUser.id}`
+      );
 
-    toast.success(" Removed from Favorites");
+      const updatedFavorites =
+        response.data.favorites.filter(
+
+          (car) => car.id !== carId
+
+        );
+
+      await api.patch(
+        `/users/${currentUser.id}`,
+        {
+          favorites: updatedFavorites
+        }
+      );
+
+      localStorage.setItem(
+        "currentUser",
+        JSON.stringify({
+          ...response.data,
+          favorites: updatedFavorites
+        })
+      );
+
+      setFavorites(updatedFavorites);
+
+      toast.success(" Removed from Favorites");
+
+    } catch {
+
+      toast.error("Failed to remove favorite");
+
+    }
 
   };
 

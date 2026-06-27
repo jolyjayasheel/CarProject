@@ -6,7 +6,7 @@ function CarCard({ car }) {
 
   const loggedIn = localStorage.getItem("loggedIn");
 
-  const addToFavorites = () => {
+  const addToFavorites = async () => {
 
     if (!loggedIn) {
 
@@ -16,37 +16,51 @@ function CarCard({ car }) {
 
     }
 
-    let favorites =
-      JSON.parse(localStorage.getItem("favorites")) || [];
+    try {
 
-    const exists = favorites.find(
-      (item) => item.id === car.id
-    );
+      const currentUser = JSON.parse(
+        localStorage.getItem("currentUser")
+      );
 
-    if (!exists) {
+      const response = await api.get(`/users/${currentUser.id}`);
+
+      const user = response.data;
+
+      const favorites = user.favorites || [];
+
+      const exists = favorites.find(
+        (item) => item.id === car.id
+      );
+
+      if (exists) {
+
+        toast.info("Already in Favorites");
+
+        return;
+
+      }
 
       favorites.push(car);
 
+      await api.patch(`/users/${user.id}`, {
+        favorites
+      });
+
       localStorage.setItem(
-        "favorites",
-        JSON.stringify(favorites)
+        "currentUser",
+        JSON.stringify({
+          ...user,
+          favorites
+        })
       );
 
       toast.success(" Added to Favorites");
 
-    } else {
+    } catch (error) {
 
-      toast.info("Already in Favorites");
+      console.log(error);
 
-    }
-
-  };
-
-  const handleEdit = () => {
-
-    if (!loggedIn) {
-
-      toast.warning(" Please login first!");
+      toast.error("Failed to add favorite");
 
     }
 
@@ -63,7 +77,7 @@ function CarCard({ car }) {
     }
 
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this car?"
+      "Delete this car?"
     );
 
     if (!confirmDelete) return;
@@ -72,7 +86,7 @@ function CarCard({ car }) {
 
       await api.delete(`/cars/${car.id}`);
 
-      toast.success("🗑 Car Deleted Successfully");
+      toast.success("🗑 Car Deleted");
 
       setTimeout(() => {
 
@@ -131,7 +145,9 @@ function CarCard({ car }) {
 
             <button
               className="edit"
-              onClick={handleEdit}
+              onClick={() =>
+                toast.warning(" Please login first!")
+              }
             >
               Edit
             </button>

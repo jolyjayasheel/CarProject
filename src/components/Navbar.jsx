@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "../styles/navbar.css";
 
 function Navbar() {
@@ -7,18 +8,24 @@ function Navbar() {
 
   const loggedIn = localStorage.getItem("loggedIn");
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const currentUser = JSON.parse(
+    localStorage.getItem("currentUser")
+  );
 
-  const favorites =
-    JSON.parse(localStorage.getItem("favorites")) || [];
-
-  const handleLogout = () => {
+  const logout = () => {
 
     localStorage.removeItem("loggedIn");
+    localStorage.removeItem("currentUser");
 
-    navigate("/");
+    toast.success("👋 Logged Out Successfully");
 
-    window.location.reload();
+    setTimeout(() => {
+
+      navigate("/login");
+
+      window.location.reload();
+
+    }, 1000);
 
   };
 
@@ -26,78 +33,67 @@ function Navbar() {
 
     <nav className="navbar">
 
-      <div className="logo">
+      <Link
+        to="/"
+        className="logo"
+      >
 
-        <Link to="/">
-          <h2>🏎 Midnight Motors</h2>
+        🏎 Midnight Motors
+
+      </Link>
+
+      <div className="nav-links">
+
+        <Link to="/">Home</Link>
+
+        <Link to="/cars">Cars</Link>
+
+        <Link to="/favorites">
+          Favorites
         </Link>
 
-      </div>
-
-      <ul className="nav-links">
-
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-
-        <li>
-          <Link to="/cars">Cars</Link>
-        </li>
-
-        {!loggedIn && (
+        {loggedIn ? (
 
           <>
-            <li>
-              <Link to="/register">Register</Link>
-            </li>
 
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-          </>
+            <span className="welcome">
 
-        )}
+              👋 {currentUser?.name}
 
-        {loggedIn && (
+            </span>
 
-          <>
-            <li>
-              <Link to="/add-car">
-                Add Car
-              </Link>
-            </li>
-
-            <li>
-              <Link to="/favorites">
-                Favorites ({favorites.length})
-              </Link>
-            </li>
-
-            <li
-              style={{
-                color: "#ddd",
-                fontWeight: "bold"
-              }}
+            <button
+              className="logout-btn"
+              onClick={logout}
             >
-              👋 {user?.name}
-            </li>
 
-            <li>
+              Logout
 
-              <button
-                className="logout-btn"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
+            </button>
 
-            </li>
+          </>
+
+        ) : (
+
+          <>
+
+            <Link to="/login">
+
+              Login
+
+            </Link>
+
+            <Link to="/register">
+
+              Register
+
+            </Link>
 
           </>
 
         )}
 
-      </ul>
+      </div>
 
     </nav>
 

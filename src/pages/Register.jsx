@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import api from "../services/api";
 import "../styles/form.css";
 
 function Register() {
@@ -22,17 +23,46 @@ function Register() {
 
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
 
     e.preventDefault();
 
-    localStorage.setItem("user", JSON.stringify(user));
+    try {
 
-    toast.success(" Registration Successful!");
+      // Check if email already exists
+      const response = await api.get("/users");
 
-    setTimeout(() => {
-      navigate("/login");
-    }, 1500);
+      const exists = response.data.find(
+        (u) => u.email === user.email
+      );
+
+      if (exists) {
+
+        toast.error("Email already registered!");
+
+        return;
+
+      }
+
+      // Create new user
+      await api.post("/users", {
+        ...user,
+        favorites: []
+      });
+
+      toast.success("🎉 Registration Successful!");
+
+      setTimeout(() => {
+
+        navigate("/login");
+
+      }, 1500);
+
+    } catch {
+
+      toast.error("Registration Failed");
+
+    }
 
   };
 
@@ -40,9 +70,12 @@ function Register() {
 
     <div className="form-container">
 
-      <form className="form-card" onSubmit={handleSubmit}>
+      <form
+        className="form-card"
+        onSubmit={handleSubmit}
+      >
 
-        <h2>Create Account </h2>
+        <h2>Create Account</h2>
 
         <input
           type="text"
@@ -72,7 +105,9 @@ function Register() {
         />
 
         <button type="submit">
+
           Register
+
         </button>
 
         <p className="bottom-text">
@@ -80,7 +115,9 @@ function Register() {
           Already have an account?
 
           <Link to="/login">
+
             Login
+
           </Link>
 
         </p>
