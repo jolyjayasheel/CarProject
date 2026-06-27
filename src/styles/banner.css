@@ -1,0 +1,28 @@
+.page-banner{
+    height:240px;
+    background:url("/hero.png");
+    background-size:cover;
+    background-position:center;
+    border-radius:18px;
+    overflow:hidden;
+    margin-bottom:40px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+.page-banner::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.65);
+}
+
+.page-banner h1{
+    position:relative;
+    color:white;
+    font-size:52px;
+    letter-spacing:2px;
+    z-index:2;
+}

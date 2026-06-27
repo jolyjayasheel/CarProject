@@ -1,0 +1,61 @@
+{
+  "cars": [
+    {
+      "id": "1",
+      "name": "BMW M4 Competition",
+      "brand": "BMW",
+      "fuel": "Petrol",
+      "engine": "3.0L Twin Turbo",
+      "transmission": "Automatic",
+      "mileage": "11 km/l",
+      "price": "1.45 Cr",
+      "color": "Black",
+      "topSpeed": "250 km/h",
+      "image": "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80",
+      "description": "Luxury sports coupe with outstanding performance."
+    },
+    {
+      "id": "2",
+      "name": "Audi RS7",
+      "brand": "Audi",
+      "fuel": "Petrol",
+      "engine": "4.0L Twin Turbo V8",
+      "transmission": "Automatic",
+      "mileage": "9 km/l",
+      "price": "2.24 Cr",
+      "color": "Grey",
+      "topSpeed": "305 km/h",
+      "image": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
+      "description": "Luxury performance sedan with aggressive styling."
+    },
+    {
+      "id": "4",
+      "name": "Porsche 911 Turbo S",
+      "brand": "Porsche",
+      "fuel": "Petrol",
+      "engine": "3.8L Twin Turbo",
+      "transmission": "Automatic",
+      "mileage": "10 km/l",
+      "price": "3.35 Cr",
+      "color": "Black",
+      "topSpeed": "330 km/h",
+      "image": "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80",
+      "description": "One of the world's most iconic sports cars."
+    },
+    {
+      "id": "5",
+      "name": "Toyota GR Supra",
+      "brand": "Toyota",
+      "fuel": "Petrol",
+      "engine": "3.0L Turbo",
+      "transmission": "Automatic",
+      "mileage": "13 km/l",
+      "price": "85 Lakhs",
+      "color": "Yellow",
+      "topSpeed": "250 km/h",
+      "image": "https://images.unsplash.com/photo-1494905998402-395d579af36f?auto=format&fit=crop&w=900&q=80",
+      "description": "Legendary Japanese sports car with modern engineering."
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
