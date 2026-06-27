@@ -36,7 +36,7 @@ function Navbar() {
         className="logo"
       >
 
-        🚗 Midnight Motors
+         Midnight Motors
 
       </Link>
 
